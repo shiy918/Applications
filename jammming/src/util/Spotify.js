@@ -38,6 +38,7 @@ const Spotify = {
 
  	 },
 
+
  	search(term) {
  	 	let accessToken = Spotify.getAccessToken();
         let searchURL = `https://api.spotify.com/v1/search?type=track&q=${term}`;
@@ -90,6 +91,7 @@ const Spotify = {
  							  body: JSON.stringify({name: playlistName})})
  				.then(response => {return response.json();})
  				.then(jsonResponse => {
+ 					
  					let playlist_id = jsonResponse.id;
 
  					return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists/${playlist_id}/tracks`,

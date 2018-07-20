@@ -6,6 +6,8 @@ import SearchBar from '../Components/SearchBar/SearchBar';
 import SearchResults from '../Components/SearchResults/SearchResults';
 import PlayList from '../Components/Playlist/Playlist';
 import Spotify from '../util/Spotify';
+import Loading from '../Components/Loading/Loading';
+
 
 
 class App extends Component {
@@ -16,7 +18,9 @@ class App extends Component {
 
       this.state = { searchResults: [],
                       playlistName:'New Playlist',
-                      playlistTracks: []};
+                      playlistTracks: [],
+                      loading: false
+                    };
 
       this.addTrack = this.addTrack.bind(this);
       this.removeTrack = this.removeTrack.bind(this);
@@ -26,20 +30,24 @@ class App extends Component {
      }
       
 
-
     addTrack(track) {
         if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)){
           return;
         }
 
-        let currentTracks = this.state.playlistTracks;
-        currentTracks.push(track);
-        this.setState({playlistTracks: currentTracks});
+        //create a copy of the playlist tracks
+        const playlistTracks = [...this.state.playlistTracks];
+
+        //push track to the copy
+        playlistTracks.push(track);
+
+        //final modification of the playlist 
+        this.setState({playlistTracks: playlistTracks});
     }
 
     removeTrack(track) {
        if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
-         let currentTracks = this.state.playlistTracks;
+         let currentTracks = [...this.state.playlistTracks];
          let trackIndex = currentTracks.indexOf(track);
          if(trackIndex > -1){
            currentTracks.splice(trackIndex,1);
@@ -48,16 +56,30 @@ class App extends Component {
        }
     }
 
+
     updatePlaylistName(name) {
       this.setState({playlistName: name});
     }
 
+
     savePlaylist() {
-       let trackURIs = [];
-       this.state.playlistTracks.forEach(track=>{trackURIs.push(track.uri);});
-        Spotify.savePlaylist(this.state.playlistName,trackURIs).then(()=>{
-           this.setState({playlistName:'New Playlist', playlistTracks:[]});
-        });
+      
+       //reset state of loading after SAVE button is being clicked on
+       this.setState({ loading: true}, ()=>{
+
+          //update playlist
+          let trackURIs = [];
+          this.state.playlistTracks.forEach(track=>{trackURIs.push(track.uri);});
+          Spotify.savePlaylist(this.state.playlistName,trackURIs)
+          //after updating, set new states
+          .then(()=>{
+          this.setState({playlistName:'New Playlist', playlistTracks:[], loading: false});
+        })
+       });
+
+        //display success if a playlist is saved
+        this.setState({success: true});
+      
     }
 
     search(term) {
@@ -68,6 +90,22 @@ class App extends Component {
 
 
     render () {
+
+      // const {success} = this.state;
+      const {loading} = this.state;
+
+      //if a playlist is loading, show a loader
+       if(loading){
+        return (
+          <div>
+            <h1>Ja<span className='highlight'>mmm</span>ing</h1>
+            <div className='App'>
+              <Loading />
+            </div>
+          </div>
+        );
+      }
+
 
       return (
         <div>

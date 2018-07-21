@@ -2,10 +2,10 @@ import React from 'react';
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react';
 
 const Loading= () => (
-  <div>
+  <div className='Loader'>
     <Segment>
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
+      <Dimmer active>
+        <Loader size='huge'>Loading</Loader>
       </Dimmer>
 
       <Image src='/images/wireframe/short-paragraph.png' />

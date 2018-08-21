@@ -11,10 +11,11 @@ class Track extends React.Component{
 	}
 
 	renderAction(){
-
+		//remove a track if - is being clicked on
 		if(this.props.isRemoval){
 			return (<a onClick={this.removeTrack}>-</a>);
 		}
+		//otherwise, add track
 		return (<a onClick={this.addTrack}>+</a>);
 	}
 

@@ -16,9 +16,10 @@ class App extends Component {
       super(props);
 
 
-      this.state = { searchResults: [],
+      this.state = {  searchResults: [],
                       playlistName:'New Playlist',
                       playlistTracks: [],
+                      //set the loading state to keep track of the loading process
                       loading: false
                     };
 
@@ -29,7 +30,7 @@ class App extends Component {
       this.search = this.search.bind(this);
      }
       
-
+     //add a track to a playlist
     addTrack(track) {
         if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)){
           return;
@@ -45,10 +46,15 @@ class App extends Component {
         this.setState({playlistTracks: playlistTracks});
     }
 
+    //remove a track from a playlist 
     removeTrack(track) {
        if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+         //create a new copy of the playlist for alteration
          let currentTracks = [...this.state.playlistTracks];
+
          let trackIndex = currentTracks.indexOf(track);
+
+         //get rid of the track using its index
          if(trackIndex > -1){
            currentTracks.splice(trackIndex,1);
          }      
@@ -82,6 +88,7 @@ class App extends Component {
       
     }
 
+    //search for tracks using Spotify API
     search(term) {
       Spotify.search(term).then(tracks => {
         this.setState({searchResults: tracks});

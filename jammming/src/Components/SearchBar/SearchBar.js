@@ -10,6 +10,7 @@ class SearchBar extends React.Component{
 		this.handleTermChange = this.handleTermChange.bind(this);
 	}
 
+ 	//search for playlist upon clicking
 	search(e) {
 		this.props.onSearch(this.state.search);
 		e.preventDefault();

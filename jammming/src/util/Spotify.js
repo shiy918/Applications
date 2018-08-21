@@ -9,6 +9,7 @@ let expiresIn = '';
 
 const Spotify = {
 
+	//get the access token 
 	getAccessToken() {
 		if (accessToken){
 			return accessToken;
@@ -38,7 +39,7 @@ const Spotify = {
 
  	 },
 
-
+ 	//search for playlists using Spotify 
  	search(term) {
  	 	let accessToken = Spotify.getAccessToken();
         let searchURL = `https://api.spotify.com/v1/search?type=track&q=${term}`;
@@ -67,6 +68,7 @@ const Spotify = {
 
  	},
 
+ 	//save the playlist to an account 
  	savePlaylist(playlistName,trackURIs){
  		if (!accessToken){
  			accessToken = Spotify.getAccessToken();
